@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "478324220311",
+    "firebase_url": "https://soutetirza-pset6-a3a9f.firebaseio.com",
+    "project_id": "soutetirza-pset6-a3a9f",
+    "storage_bucket": "soutetirza-pset6-a3a9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478324220311:android:4f66744c63480232",
+        "android_client_info": {
+          "package_name": "com.example.tirza.soutetirza_pset6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478324220311-r2otce13hj8eufeqtng86a6jjo4t9kpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzkcs8tnA94NWggErIGwaz2ZxbNbaaPKY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478324220311:android:f2c8f2d92c64d974",
+        "android_client_info": {
+          "package_name": "com.example.tirza.soutetirza_pset62"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478324220311-r2otce13hj8eufeqtng86a6jjo4t9kpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzkcs8tnA94NWggErIGwaz2ZxbNbaaPKY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

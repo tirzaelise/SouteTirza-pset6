@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SouteTirza-pset62</string>
+    <string name="welcomeText">Search for events!</string>
+    <string name="email">Email address</string>
+    <string name="password">Password</string>
+    <string name="signIn">Sign in</string>
+    <string name="signUp">Sign up</string>
+    <string name="signOut">Sign out</string>
+    <string name="search">Search</string>
+    <string name="nearby">Nearby</string>
+    <string name="saved">Saved</string>
+    <string name="location">Location</string>
+    <string name="keywords">Keywords (optional)</string>
+    <string name="noDescription">No description is available</string>
+    <string name="savedEvents">Saved Events</string>
+    <string name="resultsEvents">Search Results</string>
+    <string name="deleteDesc">Button to delete an event</string>
+    <string name="saveDesc">Button to save an event</string>
+    <string name="shareDesc">Button to share an event</string>
+    <string name="account">Account</string>
+</resources>
