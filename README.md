@@ -1,8 +1,8 @@
 # SouteTirza-pset6
 
-<img src="/doc/account_portrait.png" width="225">
-<img src="/doc/result_portrait.png" width="225">
 <img src="/doc/search_portrait.png" width="225">
+<img src="/doc/result_portrait.png" width="225">
+<img src="/doc/account_portrait.png" width="225">
 <img src="/doc/search_landscape.png" height="225">
 <img src="/doc/account_landscape.png" height="225">
 
