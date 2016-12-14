@@ -3,8 +3,8 @@
 <img src="/doc/account_portrait.png" width="225">
 <img src="/doc/result_portrait.png" width="225">
 <img src="/doc/search_portrait.png" width="225">
-<img src="/doc/search_landscape.png" width="225">
-<img src="/doc/account_landscape.png" width="225">
+<img src="/doc/search_landscape.png" height="225">
+<img src="/doc/account_landscape.png" height="225">
 
 This application lets the user search for events that are happening given an input location.
 The user can also give keywords to reduce the amount of unwanted results. These results are obtained using the Eventful API.
