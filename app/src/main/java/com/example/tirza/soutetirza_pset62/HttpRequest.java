@@ -1,7 +1,8 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This file uses the location that was given as input by the user to make a URL request.
+ * This file uses the location and optional keywords that wre given as input by the user to make a
+ * URL request to the Eventful API.
  */
 
 package com.example.tirza.soutetirza_pset62;
@@ -15,7 +16,7 @@ import java.net.URL;
 
 class HttpRequest {
 
-    /** Uses the url that was given by the user to make a request to the OMDb API */
+    /** Uses the URL that was given by the user to make a request to the Eventful API */
     static synchronized String downloadFromAPI(String... params) {
         String urlToApi = "http://api.eventful.com/rest/events/search?...";
         String key = "&app_key=4HnrhJhqgB996TGp";

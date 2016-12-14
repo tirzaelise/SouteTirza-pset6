@@ -37,12 +37,12 @@ class EventAsyncTask extends AsyncTask<String, String, String> {
         this.context = this.activity.getApplicationContext();
     }
 
-    /** Receives the data that was obtained using the HttpRequest file */
+    /** Returns the data that was obtained using the HttpRequest file */
     protected String doInBackground(String... params) {
         return HttpRequest.downloadFromAPI(params);
     }
 
-    /** Creates an ArrayList of Event objects */
+    /** Creates an ArrayList of Event objects and passes the data to SearchActivity */
     protected void onPostExecute(String result) {
         ArrayList<Event> events = new ArrayList<>();
 
@@ -62,7 +62,7 @@ class EventAsyncTask extends AsyncTask<String, String, String> {
     }
 
     /**
-     * Creates a NodeList of the events that were retrieved with the HttpRequest file
+     * Creates a NodeList of the events that were obtained using HttpRequest
      * Source: http://www.java2s.com/Code/Java/XML/ParseanXMLstringUsingDOMandaStringReader.htm
      */
     private NodeList createNodes(String result) {
@@ -117,7 +117,7 @@ class EventAsyncTask extends AsyncTask<String, String, String> {
     }
 
     /**
-     * Creates character data from an element
+     * Gets character data from an element
      * Source: http://www.java2s.com/Code/Java/XML/ParseanXMLstringUsingDOMandaStringReader.htm
      */
     private static String getCharacterDataFromElement(Element e) {
@@ -129,7 +129,7 @@ class EventAsyncTask extends AsyncTask<String, String, String> {
         return "";
     }
 
-    /** Converts the date to a prettier format */
+    /** Converts the date to a prettier format (text instead of digits) */
     private String prettifyDate(String date) {
         String[] splitDate = date.split("-");
         String year = splitDate[0];
@@ -181,7 +181,10 @@ class EventAsyncTask extends AsyncTask<String, String, String> {
         return textMonth;
     }
 
-    /** Converts the description to a nicer format */
+    /**
+     * Converts the description to a prettier format (removes the first character if it's a
+     * whitespace and replaces the HTML character for an apostrophe with an apostrophe)
+     */
     private String prettifyDescription(String description) {
         if (!description.equals("")) {
             // Removes the first character from the description if it is a whitespace
@@ -189,7 +192,6 @@ class EventAsyncTask extends AsyncTask<String, String, String> {
             // Replaces the HTML character
             description = description.replace("&#39;", "'");
         }
-
         return description;
     }
 }

@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
 class EventAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Event> data;
@@ -29,6 +28,7 @@ class EventAdapter extends BaseAdapter {
     private TextView description;
     private Event event;
 
+    /** Creates EventAdapter constructor*/
     EventAdapter(Context context, ArrayList<Event> data, Boolean resultList) {
         this.context = context;
         this.data = data;
@@ -36,22 +36,25 @@ class EventAdapter extends BaseAdapter {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /** Returns the size of the data */
     @Override
     public int getCount() {
         return data.size();
     }
 
+    /** Returns an item at a given position */
     @Override
     public Object getItem(int position) {
         return data.get(position);
     }
 
+    /** Returns the id of an item at a given position */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
-    /** Sets the information about the event in the ListView */
+    /** Sets the information about an event in the ListView */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
@@ -86,7 +89,7 @@ class EventAdapter extends BaseAdapter {
         return rowView;
     }
 
-    /** Initialises values for the event and the text views that the data has to be set in*/
+    /** Initialises values for the event and the text views that the data has to be set in */
     private void getTextViewsAndEvent(View view, int position) {
         event = (Event) getItem(position);
 

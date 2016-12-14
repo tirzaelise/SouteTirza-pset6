@@ -28,22 +28,27 @@ class Event implements Serializable {
     public Event() {
     }
 
+    /** Returns the title of an event */
     String getTitle() {
         return title;
     }
 
+    /** Returns the description of an event */
     String getDescription() {
         return description;
     }
 
+    /** Returns the date of an event */
     String getDate() {
         return date;
     }
 
+    /** Returns the venue of an event */
     String getVenue() {
         return venue;
     }
 
+    /** Returns the location of the venue */
     String getLocation() {
         return location;
     }

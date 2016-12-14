@@ -11,10 +11,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class AccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    FirebaseUser user;
+    private FirebaseUser user;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String email;
     private String password;
@@ -41,59 +41,32 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_account);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(null);
+
+
         mAuth = FirebaseAuth.getInstance();
         setLoggedInListener();
     }
 
-    /**
-     * Adds items to the action bar
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    /**
-     * Defines what happens when an item in the action bar is clicked
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.searchMenu) {
-            Intent searchActivity = new Intent(this, SearchActivity.class);
-            startActivity(searchActivity);
-            return true;
-        } else if (id == R.id.starMenu) {
-            Intent savedActivity = new Intent(this, SavedActivity.class);
-            startActivity(savedActivity);
-            return true;
-        } else if (id == R.id.userMenu) {
-            Intent accountActivity = new Intent(this, AccountActivity.class);
-            startActivity(accountActivity);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    /** Starts registering listeners to the authentication state */
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    /** Stops registering listeners to the authentication state */
     @Override
     public void onStop() {
         super.onStop();
+
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
-    /**
-     * Adds a listener to see if the user is logged in
-     */
+    /** Adds a listener to check if the user is logged in */
     public void setLoggedInListener() {
         SharedPreferences sharedPrefs = getSharedPreferences("userInfo",
                 Context.MODE_PRIVATE);
@@ -105,14 +78,10 @@ public class AccountActivity extends AppCompatActivity {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     user = firebaseAuth.getCurrentUser();
-                    Log.wtf("signed in", "onAuthStateChanged:signed_in:" + user.getUid());
                     changeVisibility(true);
 
-                    editor.putString("userId", user.getUid());
-                    editor.apply();
+                    editor.putString("userId", user.getUid()).apply();
                 } else {
-                    Log.wtf("signed out", "onAuthStateChanged:signed_out");
-
                     changeVisibility(false);
                     editor.remove("userId").apply();
                 }
@@ -121,7 +90,10 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     /**
-     * Hides the text views to give an email address and password and sign in and up buttons
+     * Hides the text views to give an email address and password and sign in and up buttons if the
+     * user is logged in, shows the sign out button
+     * Hides the sign out button if the user is not logged in and shows the sign in and up buttons
+     * and the text views to give an email address and password
      */
     private void changeVisibility(boolean loggedIn) {
         EditText giveEmail = (EditText) findViewById(R.id.giveEmail);
@@ -147,9 +119,7 @@ public class AccountActivity extends AppCompatActivity {
         signOut.setVisibility(loggedOutButton);
     }
 
-    /**
-     * Creates an account in the Firebase database
-     */
+    /** Creates an account in the Firebase database */
     public void createAccount(View view) {
         final EditText giveEmail = (EditText) findViewById(R.id.giveEmail);
         email = giveEmail.getText().toString();
@@ -172,6 +142,9 @@ public class AccountActivity extends AppCompatActivity {
                             }
                         }
                     });
+        } else if (email.length() < 6 && password.length() < 6){
+            Toast.makeText(this, "Please enter a valid email address and password",
+                    Toast.LENGTH_SHORT).show();
         } else if (!isValidEmail(email)) {
             Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
         } else {
@@ -180,17 +153,13 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Checks if an email address is valid
-     */
+    /** Checks if an email address is valid */
     public static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) &&
                 android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    /**
-     * Signs in the user
-     */
+    /** Signs in the user */
     public void signIn(View view) {
         final EditText giveEmail = (EditText) findViewById(R.id.giveEmail);
         email = giveEmail.getText().toString();
@@ -223,7 +192,7 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
-    /** Signs out the user */
+    /** Signs out the user if the user is logged in */
     public void signOut(View view) {
         if (user != null) {
             FirebaseAuth.getInstance().signOut();
@@ -238,4 +207,36 @@ public class AccountActivity extends AppCompatActivity {
                 context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    /** Adds items to the action bar */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /** Defines what happens when an item in the action bar is clicked */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.searchMenu) {
+            Intent searchActivity = new Intent(this, SearchActivity.class);
+            startActivity(searchActivity);
+            finish();
+            return true;
+        } else if (id == R.id.starMenu) {
+            Intent savedActivity = new Intent(this, SavedActivity.class);
+            startActivity(savedActivity);
+            finish();
+            return true;
+        } else if (id == R.id.userMenu) {
+            Intent accountActivity = new Intent(this, AccountActivity.class);
+            startActivity(accountActivity);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

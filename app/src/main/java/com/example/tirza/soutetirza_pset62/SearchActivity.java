@@ -10,9 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,42 +32,23 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_search);
-        resetLastSearch();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setTitle(null);
 
         mAuth = FirebaseAuth.getInstance();
         setLoggedInListener();
+        resetLastSearch();
     }
 
-    /** Adds a listener to see if the user is logged in */
-    public void setLoggedInListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    user = firebaseAuth.getCurrentUser();
-                    Log.wtf("signed in", "onAuthStateChanged:signed_in:" + user.getUid());
-
-                    SharedPreferences sharedPrefs = getSharedPreferences("userInfo",
-                            Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPrefs.edit();
-                    editor.putString("userId", user.getUid());
-                    editor.apply();
-                } else {
-                    // User is signed out
-                    Log.wtf("signed out", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-    }
-
+    /** Starts registering listeners to the authentication state */
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+    /** Stops registering listeners to the authentication state */
     @Override
     public void onStop() {
         super.onStop();
@@ -76,46 +57,37 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    // Menu icons are inflated just as they were with actionbar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    /** Adds a listener to check if the user is logged in */
+    public void setLoggedInListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    user = firebaseAuth.getCurrentUser();
+
+                    SharedPreferences sharedPrefs = getSharedPreferences("userInfo",
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPrefs.edit();
+                    editor.putString("userId", user.getUid());
+                    editor.apply();
+                }
+            }
+        };
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.searchMenu) {
-            Intent searchActivity = new Intent(this, SearchActivity.class);
-            startActivity(searchActivity);
-            return true;
-        } else if (id == R.id.starMenu) {
-            Intent savedActivity = new Intent(this, SavedActivity.class);
-            startActivity(savedActivity);
-            return true;
-        } else if (id == R.id.userMenu) {
-            Intent accountActivity = new Intent(this, AccountActivity.class);
-            startActivity(accountActivity);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /** Sets the location and keywords in the EditTexts to the user's last search */
+    /** Sets the location and keywords in the EditTexts to the user's most recent search */
     public void resetLastSearch() {
         SharedPreferences sharedPrefs = this.getSharedPreferences("lastSearch",
                                                                   Context.MODE_PRIVATE);
         if (sharedPrefs.contains("lastLocation")) {
             String lastLocation = sharedPrefs.getString("lastLocation", "location");
+            String lastKeywords = sharedPrefs.getString("lastKeywords", "keywords");
             EditText giveLocation = (EditText) findViewById(R.id.giveLocation);
+            EditText giveKeywords = (EditText) findViewById(R.id.giveKeywords);
             giveLocation.setText(lastLocation);
-            if (sharedPrefs.contains("keywords")) {
-                String lastKeywords = sharedPrefs.getString("lastKeywords", "keywords");
-                giveLocation.setText(lastKeywords);
-            }
+            giveKeywords.setText(lastKeywords);
         }
     }
 
@@ -137,16 +109,13 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    /** Saves the last search in Shared Preferences */
+    /** Saves the user's most recent search in Shared Preferences */
     private void saveLastSearch(String location, String keywords) {
         SharedPreferences sharedPrefs = this.getSharedPreferences("lastSearch",
                                                                   Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString("lastLocation", location);
-
-        if (!keywords.equals("")) {
-            editor.putString("lastKeywords", keywords);
-        }
+        editor.putString("lastKeywords", keywords);
         editor.apply();
     }
 
@@ -157,5 +126,33 @@ public class SearchActivity extends AppCompatActivity {
         extras.putSerializable("events", events);
         showResult.putExtras(extras);
         startActivity(showResult);
+    }
+
+    /** Adds items to the action bar */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /** Defines what happens when an item in the action bar is clicked */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.searchMenu) {
+            Intent searchActivity = new Intent(this, SearchActivity.class);
+            startActivity(searchActivity);
+            return true;
+        } else if (id == R.id.starMenu) {
+            Intent savedActivity = new Intent(this, SavedActivity.class);
+            startActivity(savedActivity);
+            return true;
+        } else if (id == R.id.userMenu) {
+            Intent accountActivity = new Intent(this, AccountActivity.class);
+            startActivity(accountActivity);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

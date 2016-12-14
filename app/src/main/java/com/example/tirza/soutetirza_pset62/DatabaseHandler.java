@@ -7,7 +7,6 @@
 package com.example.tirza.soutetirza_pset62;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +25,7 @@ class DatabaseHandler {
     private ArrayList<Event> events;
     private String id;
 
+    /** Creates DatabaseHandler constructor */
     DatabaseHandler(ArrayList<Event> events, String id) {
         this.events = events;
         this.id = id;
@@ -35,6 +35,7 @@ class DatabaseHandler {
     void saveEvent(View view) {
         String eventName = getClickedEvent(view);
         Event event = findEvent(eventName);
+
         if (event != null) {
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             database.child(id).push().setValue(event);
@@ -52,46 +53,16 @@ class DatabaseHandler {
         return titleTextView.getText().toString();
     }
 
-
     /** Finds the Event object and all the corresponding information using the title of an event */
     Event findEvent(String eventToGet) {
         for (Event event: events) {
             String eventName = event.getTitle();
+
             if (eventName.equals(eventToGet)) {
                 return event;
             }
         }
         return null;
-    }
-
-    /** Reads the events that the user has saved in the database */
-    void readDatabase() {
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        events = new ArrayList<>();
-
-        database.child(id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot eventSnapshot: dataSnapshot.getChildren()) {
-                    Event event = eventSnapshot.getValue(Event.class);
-                    events.add(event);
-                    Log.d("event title", event.getTitle());
-                    DatabaseHandler.this.events = events;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                SavedActivity savedActivity = new SavedActivity();
-                Context context = savedActivity.getApplicationContext();
-                Toast.makeText(context, "Failed to read database", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /** Returns the events that the user has saved */
-    ArrayList<Event> getEvents() {
-        return events;
     }
 
     /** Deletes an event from the database */
