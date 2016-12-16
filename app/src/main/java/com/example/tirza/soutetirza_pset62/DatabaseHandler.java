@@ -1,7 +1,10 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This file handles the database actions.
+ * This file handles the database actions. If the user tries to save an event, he gets sent to the
+ * method saveEvent, where the clicked event is found using the methods getClickedEvent and
+ * findEvent. Finally, if the user wants to delete an event, this event is deleted from the Firebase
+ * database using the method deleteEvent.
  */
 
 package com.example.tirza.soutetirza_pset62;

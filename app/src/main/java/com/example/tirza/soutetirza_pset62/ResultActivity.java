@@ -1,8 +1,9 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This activity shows the user's search results. He can also save and share an event if he is
- * interested.
+ * This activity shows the user's search results. This is done by obtaining the events that were
+ * found from the extras bundle that were placed there in SearchActivity. These events are then
+ * placed in a ListView. The user can save and share an events if he is interested in them.
  */
 
 package com.example.tirza.soutetirza_pset62;
@@ -61,8 +62,15 @@ public class ResultActivity extends AppCompatActivity {
 
     /** Shares an event to the user's platform of choice */
     public void shareEvent(View view) {
-        ResultActivity resultActivity = new ResultActivity();
-        resultActivity.shareEvent(view);
+        DatabaseHandler databaseHandler = new DatabaseHandler(events, id);
+        String eventName = databaseHandler.getClickedEvent(view);
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+        sharingIntent.setType("text/plain");
+        String shareBody = "I would like to share " + eventName + "!";
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        Intent chooser = Intent.createChooser(sharingIntent, "Share via");
+        startActivity(chooser);
     }
 
     /** Adds items to the action bar */

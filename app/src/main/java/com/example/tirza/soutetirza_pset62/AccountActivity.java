@@ -1,7 +1,10 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This activity allows the user to sign up, sign in and sign out.
+ * This activity allows the user to sign up using the method signUp, which uses the method
+ * isValidEmail to check whether his input email address is valid. Furthermore, his password must be
+ * over 6 characters. An account is then created in the Firebase database. If the user already has
+ * an account, he can sign in using the method signIn and sign out using the method signOut.
  */
 
 package com.example.tirza.soutetirza_pset62;
@@ -67,7 +70,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     /** Adds a listener to check if the user is logged in */
-    public void setLoggedInListener() {
+    private void setLoggedInListener() {
         SharedPreferences sharedPrefs = getSharedPreferences("userInfo",
                 Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -120,7 +123,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     /** Creates an account in the Firebase database */
-    public void createAccount(View view) {
+    public void signUp(View view) {
         final EditText giveEmail = (EditText) findViewById(R.id.giveEmail);
         email = giveEmail.getText().toString();
         final EditText givePassword = (EditText) findViewById(R.id.givePassword);
@@ -137,8 +140,11 @@ public class AccountActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(AccountActivity.this, "Registration successful",
                                         Toast.LENGTH_SHORT).show();
+
                                 giveEmail.setText("");
                                 givePassword.setText("");
+                                goToSearch();
+
                             }
                         }
                     });
@@ -154,9 +160,16 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     /** Checks if an email address is valid */
-    public static boolean isValidEmail(CharSequence target) {
+    private static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) &&
                 android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    /** Sends the user to the search activity (used after registering and logging in) */
+    private void goToSearch() {
+        Context currentActivity = this;
+        Intent newIntent = new Intent(currentActivity, SearchActivity.class);
+        startActivity(newIntent);
     }
 
     /** Signs in the user */
@@ -184,8 +197,10 @@ public class AccountActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(AccountActivity.this, "Signed in successfully",
                                         Toast.LENGTH_SHORT).show();
+
                                 hideKeyboard(giveEmail);
                                 hideKeyboard(givePassword);
+                                goToSearch();
                             }
                         }
                     });
@@ -201,7 +216,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     /** Hides the keyboard */
-    public void hideKeyboard(View view) {
+    private void hideKeyboard(View view) {
         Context context = getApplicationContext();
         InputMethodManager imm = (InputMethodManager)
                 context.getSystemService(Activity.INPUT_METHOD_SERVICE);

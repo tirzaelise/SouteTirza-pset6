@@ -2,7 +2,8 @@
  * Tirza Soute
  *
  * This file implements a custom adapter (extending the BaseAdapter) to give the obtained
- * information about the events.
+ * information about the events. This is done using the method getView, which sets the information
+ * about the event in the correct views in the layout.
  */
 
 package com.example.tirza.soutetirza_pset62;

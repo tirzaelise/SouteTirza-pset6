@@ -1,7 +1,10 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This activity shows the user the events that he saved.
+ * This activity shows the user the events that he saved. This is done by reading the Firebase
+ * database using the method getSavedEvents. This activity also allows the user to delete events
+ * from his saved list using the method deleteEvent and to share an event among his platform of
+ * choice using the method shareEvent.
  */
 
 package com.example.tirza.soutetirza_pset62;
@@ -17,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +53,8 @@ public class SavedActivity extends AppCompatActivity {
             finish();
         } else {
             ListView listView = (ListView) findViewById(R.id.listView);
+
+            listView.setAdapter(adapter);
             getSavedEvents(listView);
         }
     }
@@ -72,17 +78,32 @@ public class SavedActivity extends AppCompatActivity {
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 SavedActivity.this.adapter = adapter;
+                replaceTextInView();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                SavedActivity savedActivity = new SavedActivity();
-                Context context = savedActivity.getApplicationContext();
+                Context context = SavedActivity.this.getApplicationContext();
                 Toast.makeText(context, "Failed to read database", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Changes the visibility of the 'Loading saved events' text view if there are saved events or
+     * changes the text if there are no saved events
+     */
+    private void replaceTextInView() {
+        TextView loadingText = (TextView) findViewById(R.id.loadingText);
+
+        if (events.size() == 0) {
+            loadingText.setVisibility(View.VISIBLE);
+            String noEvents = getResources().getString(R.string.noEvents);
+            loadingText.setText(noEvents);
+        } else {
+            loadingText.setVisibility(View.GONE);
+        }
+    }
 
     /** Deletes an event from the database */
     public void deleteEvent(View view) {
@@ -93,18 +114,21 @@ public class SavedActivity extends AppCompatActivity {
 
         events.remove(clickedEvent);
         adapter.notifyDataSetChanged();
+
+        if (events.size() == 0) replaceTextInView();
     }
 
     /** Shares an event to the user's platform of choice */
     public void shareEvent(View view) {
         DatabaseHandler databaseHandler = new DatabaseHandler(events, id);
         String eventName = databaseHandler.getClickedEvent(view);
-
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+
         sharingIntent.setType("text/plain");
         String shareBody = "I would like to share " + eventName + "!";
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        Intent chooser = Intent.createChooser(sharingIntent, "Share via");
+        startActivity(chooser);
     }
 
     /** Adds items to the action bar */

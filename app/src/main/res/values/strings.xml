@@ -18,4 +18,6 @@
     <string name="saveDesc">Button to save an event</string>
     <string name="shareDesc">Button to share an event</string>
     <string name="account">Account</string>
+    <string name="loading">Loading saved events</string>
+    <string name="noEvents">No saved events</string>
 </resources>

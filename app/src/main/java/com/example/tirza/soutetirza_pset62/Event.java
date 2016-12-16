@@ -1,7 +1,9 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This file implements the Event object.
+ * This file implements the Event object using the title, the description of the event, the date of
+ * the event, the venue where the event will take place and the location of the venue. This class is
+  * Serializable so that an event object can be passed onto a new activity.
  */
 
 package com.example.tirza.soutetirza_pset62;

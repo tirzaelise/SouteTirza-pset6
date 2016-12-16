@@ -1,7 +1,13 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This activity lets the user sign in and search for events given a location and optional keywords.
+ * This activity lets the user search for events given a location and optional keywords. There is
+ * also a check to see if the user is signed in, otherwise the user cannot save events after he has
+ * searched for an event. The user's most recent search is also restored to optimise user
+ * friendliness using the method resetLastSearch and thus the user's most recent search also has to
+ * be saved, which is done using the method saveLastSearch. Finally, the user's search results
+ * are sent to this activity from the EventAsyncTask and then sent to the ResultActivity to display
+ * them.
  */
 
 package com.example.tirza.soutetirza_pset62;

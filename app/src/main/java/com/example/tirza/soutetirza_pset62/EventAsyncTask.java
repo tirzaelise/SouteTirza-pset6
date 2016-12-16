@@ -2,7 +2,8 @@
  * Tirza Soute
  *
  * This file uses the data that was received from HttpRequest to create an ArrayList of Event
- * objects.
+ * objects. This is done using the method onPostExecute, which converts the XML input to
+ *  manageable data. Furthermore, the date and description are made a bit more pleasing to look at.
  */
 
 package com.example.tirza.soutetirza_pset62;

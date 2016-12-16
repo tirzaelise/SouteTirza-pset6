@@ -1,8 +1,8 @@
 /* Native App Studio: Assignment 6
  * Tirza Soute
  *
- * This file uses the location and optional keywords that wre given as input by the user to make a
- * URL request to the Eventful API.
+ * This file uses the location and optional keywords that were given as input by the user to make a
+ * URL request to the Eventful API. This is done using the method downloadFromAPI.
  */
 
 package com.example.tirza.soutetirza_pset62;
