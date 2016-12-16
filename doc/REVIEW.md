@@ -1,9 +1,6 @@
 - Headers mogen uitgebreider
 - Duidelijke variable namen, waardoor comments overbodig zijn en dus ook goed niet gebruikt worden
 - Regel 86 SavedActivity.java enter te veel ;o
-- getSavedEvents in SavedActivity hoort eigenlijk bij de class die de database dingen regelt
-
-Je kan deze ook toevoegen aan de database class door de adapter mee te geven en dan adapter.notifyDataSetChanged() aan te roepen
 
 App zelf
 - Share werkt niet in searchresults: closed de activity
