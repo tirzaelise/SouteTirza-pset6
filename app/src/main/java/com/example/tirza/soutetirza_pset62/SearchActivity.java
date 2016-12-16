@@ -105,9 +105,9 @@ public class SearchActivity extends AppCompatActivity {
         String keywords = giveKeywords.getText().toString();
 
         if (!(location.equals(""))) {
+            saveLastSearch(location, keywords);
             location = location.replaceAll("\\s+","%20");
             keywords = keywords.replaceAll("\\s+", "%20");
-            saveLastSearch(location, keywords);
             EventAsyncTask asyncTask = new EventAsyncTask(this);
             asyncTask.execute(location, keywords, "");
         } else {
